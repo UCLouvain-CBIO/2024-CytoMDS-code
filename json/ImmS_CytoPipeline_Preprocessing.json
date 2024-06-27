@@ -1,0 +1,76 @@
+{
+    "flowFramesPreProcessingSteps": [
+        {
+            "name": ["flowframe_read"],
+            "FUN": ["readSampleFiles"],
+            "ARGS": {
+                "truncate_max_range": [false],
+                "min.limit": null
+            }
+        },
+        {
+            "name": ["remove_margins"],
+            "FUN": ["removeMarginsPeacoQC"],
+            "ARGS": {
+                "channelSpecifications": {
+                    "AllFluoChannels": [-300, 262144]
+                }
+            }
+        },
+        {
+            "name": ["compensate"],
+            "FUN": ["compensateFromMatrix"],
+            "ARGS": {
+                "matrixSource": ["import"],
+                "matrixPath" : ["$compensation"]
+            }
+        }
+    ],
+    "scaleTransformProcessingSteps": [
+        {
+            "name": ["flowframe_read"],
+            "FUN": ["readSampleFiles"],
+            "ARGS": {
+                "whichSamples": ["random"],
+                "nSamples": [4],
+    		    "seed": [0],
+                "truncate_max_range": [false],
+                "min.limit": null
+            }
+        },
+        {
+            "name": ["remove_margins"],
+            "FUN": ["removeMarginsPeacoQC"],
+            "ARGS": {
+                "channelSpecifications": {
+                    "AllFluoChannels": [-300, 262144]
+                }
+            }
+        },
+        {
+            "name": ["compensate"],
+            "FUN": ["compensateFromMatrix"],
+            "ARGS": {
+                "matrixSource": ["import"],
+                "matrixPath" : ["$compensation"]
+            }
+        },
+        {
+            "name": ["flowframe_aggregate"],
+            "FUN": ["aggregateAndSample"],
+            "ARGS": {
+                "nTotalEvents": [10000],
+                "seed": [0]
+            }
+        },
+        {
+            "name": ["scale_transform_estimate"],
+            "FUN": ["estimateScaleTransforms"],
+            "ARGS": {
+                "fluoMethod": ["estimateLogicle"],
+                "scatterMethod": ["linearQuantile"],
+                "scatterRefMarker": ["CD8"]
+            }
+        }
+    ]
+}

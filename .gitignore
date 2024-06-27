@@ -1,0 +1,12 @@
+.git
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+BPLog
+preprocessing
+plots
+
+
+
