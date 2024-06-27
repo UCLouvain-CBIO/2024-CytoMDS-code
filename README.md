@@ -10,7 +10,7 @@ User's instruction:
 ## Set-up
 - do a `git clone` of this [github repo](https://github.com/UCLouvain-CBIO/2024-CytoMDS-code)
 
-- create a R project pointing to the root directory
+- (if you are using RStudio) create a R project pointing to the root directory
 
 - download and copy the raw data :
 	+ for the *HBV Chronic Mouse dataset*, download the corresponding [zenodo repository](https://zenodo.org/records/8425840), and copy the `rawData` and `compensation` directories into the `./data/HBV_chronic_mouse/` subdirectory of the current repository. 
