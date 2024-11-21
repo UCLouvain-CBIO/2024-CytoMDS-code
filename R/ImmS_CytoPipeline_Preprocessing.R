@@ -5,16 +5,18 @@ message("*************************************************")
 require("CytoPipeline")         ## from Bioconductor
 require("CytoPipelineUtils")    ## from https://github.com/UCLouvain-CBIO/CytoPipelineUtils
 
-# output dir
+## preliminaries: path to raw data files, json input, compensation input, 
+## and outputs
+rawDataDir <- "./data/ImmunoSenescence_human_PBMC/rawData"
+jsonDir <- "./json"
+compensationDir <- "./data/ImmunoSenescence_human_PBMC/compensation"
 resultsDir <- "./preprocessing"
 
 rmCache <- TRUE
 useBiocParallel <- TRUE
 
-jsonFile <- "./json/ImmS_CytoPipeline_Preprocessing.json"
+jsonFile <- file.path(jsonDir, "ImmS_CytoPipeline_Preprocessing.json")
 expName <- "ImmunoSenescence_human_PBMC"
-
-rawDataDir <- "./data/ImmunoSenescence_human_PBMC/rawData"
 
 sampleFiles <- list.files(
     rawDataDir,
@@ -43,14 +45,13 @@ row.names(phenoData) <- phenoData$file
 
 phenoData$compensation <- ifelse(
     phenoData$panel == "former",
-    "data/ImmunoSenescence_human_PBMC/compensation/formerPanel_compensation.csv",
-    "data/ImmunoSenescence_human_PBMC/compensation/laterPanel_compensation.csv")
+    file.path(compensationDir, "formerPanel_compensation.csv"),
+    file.path(compensationDir, "laterPanel_compensation.csv"))
 
 sel <- 1:20
 #sel <- 1
 sampleFiles <- sampleFiles[sel]
 phenoData <- phenoData[sel,]
-
 
 # creation on CytoPipeline object,
 # using json file as input

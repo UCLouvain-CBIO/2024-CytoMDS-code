@@ -5,9 +5,11 @@ message("***************************************")
 require("CytoPipeline")         ## from Bioconductor
 require("CytoPipelineUtils")    ## from https://github.com/UCLouvain-CBIO/CytoPipelineUtils
 
-## preliminaries: path to raw data files, json inputs, and outputs
+## preliminaries: path to raw data files, json input, compensation input, 
+## and outputs
 rawDataDir <- "./data/HBV_chronic_mouse/rawData"
 jsonDir <- "./json"
+compensationDir <- "./data/HBV_chronic_mouse/compensation"
 resultsDir <- "./preprocessing"
 
 ## Biocparallel set up
@@ -79,8 +81,8 @@ pData <- data.frame(
 
 pData$compensation <- ifelse(
     pData$day == "D91",
-    "data/HBV_chronic_mouse/compensation/Compensations Liver D91.csv",
-    "data/HBV_chronic_mouse/compensation/Compensations Liver D93.csv")
+    file.path(compensationDir, "Compensations Liver D91.csv"),
+    file.path(compensationDir, "Compensations Liver D93.csv"))
 
 pipL <- CytoPipeline(jsonFile,
                      experimentName = expName,

@@ -61,7 +61,7 @@ for(i in seq_along(tgtSeq)) {
         path = prepDir)
 }
 
-names(ffList) <- rownames(allPhenoData)
+names(ffList) <- rownames(allPhenoData)[tgtSeq]
 
 fsAll <- as(ffList,"flowSet")
 
@@ -158,32 +158,57 @@ mds <- resultArray["mds", selChType][[1]]
 
 distVec <- pwDist[upper.tri(pwDist)]
 
-# display histogram of all pairwise distances
-# hist(distVec, 
-#      main = paste0(
-#          "Pairwise distances (step = ",
-#          prepstep,
-#          "; channels = ",
-#          selChType,
-#          ")"))
+#display histogram of all pairwise distances
+hist(distVec,
+     main = paste0(
+         "Pairwise distances (step = ",
+         prepstep,
+         "; channels = ",
+         selChType,
+         ")"))
 
 #nDim(mds)
 #CytoMDS::RSq(mds)
 
+# saveRDS(object = mds,
+#         file = "./rds/ImmS_mdsObj.rds")
+# 
+# saveRDS(object = phenoData,
+#         file = "./rds/ImmS_phenoData.rds")
+# 
+# saveRDS(object = chStats,
+#         file = "./rds/ImmS_stats.rds")
+
+pointSizeShepard <- 1.0
+pointSizeMDS <- 2.5
+
 # Figure S3
 
 message("Generating Figure S3...")
-pSh <- ggplotSampleMDSShepard(mds) + theme_bw()
-ggplotResults(pSh, name = "FigS3")
+
+pSh <- ggplotSampleMDSShepard(mds, 
+                              lineWidth = 1.0, 
+                              pointSize = pointSizeShepard,
+                              title = "") + 
+    scale_x_continuous(limits = c(0,2)) + 
+    theme_bw() + theme(plot.title = element_text(size = 20),
+                       plot.subtitle = element_text(size = 15),
+                       axis.title = element_text(size = 15),
+                       axis.text = element_text(size = 15),
+                       legend.title = element_text(size = 15),
+                       legend.text = element_text(size = 12))
+
+ggplotResults(pSh, name = "FigS3_ImmS_Shepard", width = 480, height = 480)
 message("Done!")
+
+# Figure 3
+message("Generating Figure 3...")
 
 pDataForShape <- "data_acquisition"
 pDataForLabel <- "ffName"
 pDataForColour <- "group"
 pDataForAdditionalLabelling <- c("file", "patientId")
 
-# Figure 3
-message("Generating Figure 3...")
 p1 <- ggplotSampleMDS(
     mdsObj = mds,
     pData = phenoData,
@@ -193,11 +218,18 @@ p1 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     title = "MDS - projection axes 1 and 2") + 
-    theme(legend.position="none") +
-    theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) +
+    theme_bw()
+
+p1Th <-  p1 + 
+    theme(legend.position="none",
+          plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15))
 
 p2 <- ggplotSampleMDS(
     mdsObj = mds,
@@ -208,13 +240,24 @@ p2 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     title = "MDS - projection axes 2 and 3") +
-    theme_bw() + 
     scale_shape_manual(values = c(17, 15)) + 
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) +
+    theme_bw() 
+    
 
-pRes <- p1 + p2
-ggplotResults(pRes, name = "Fig3")
+p2Th <- p2 + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
+    
+
+pRes <- p1Th + p2Th
+ggplotResults(pRes, name = "Fig3", width = 960, height = 480)
 message("Done!")
 
 # Figure S4
@@ -229,12 +272,19 @@ p01 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     title = "MDS - projection axes 1 and 2") +
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
-ggplotResults(p01, name = "FigS4_main_part")
+ggplotResults(p01, name = "FigS4_main_part", width = 540, height = 480)
 
 
 bp11 <- ggplotSampleMDS(
@@ -248,12 +298,19 @@ bp11 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     title = "Bi-plot with medians") + 
     theme(legend.position="none") +
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
 
 bp12 <- ggplotSampleMDS(
@@ -267,14 +324,21 @@ bp12 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     displayPointLabel = FALSE,
     title = "Bi-plot with standard deviations") + 
     theme(legend.position="none") + 
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
-ggplotResults(bp11 / bp12, name = "FigS4_biplots")
+ggplotResults(bp11 / bp12, name = "FigS4_biplots", width = 570, height = 960)
 
 
 file1 <- "F05_Young.fcs"
@@ -293,7 +357,14 @@ pF11 <- CytoPipelineGUI::plotSelectedFlowFrame(
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
     transfoListName = "scale_transform_estimate_obj") + 
-    labs(subtitle = "")
+    labs(subtitle = "") + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 pF12 <- CytoPipelineGUI::plotSelectedFlowFrame(
     experimentName = expName,
@@ -308,9 +379,16 @@ pF12 <- CytoPipelineGUI::plotSelectedFlowFrame(
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
     transfoListName = "scale_transform_estimate_obj") +
-    labs(subtitle = "")
+    labs(subtitle = "") + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
-ggplotResults(pF11 + pF12, name = "FigS4_indiv_samples")
+ggplotResults(pF11 + pF12, name = "FigS4_indiv_samples", width = 960, height = 480)
 message("Done!")
 
 # Figure S5
@@ -324,12 +402,19 @@ p02 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     title = "MDS - projection axes 2 and 3") +
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
-ggplotResults(p02, name = "FigS5_main_part")
+ggplotResults(p02, name = "FigS5_main_part", width = 540, height = 480)
 
 
 bp21 <- ggplotSampleMDS(
@@ -343,13 +428,20 @@ bp21 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     repelArrowLabels = TRUE,
     displayPointLabels = FALSE,
     title = "Bi-plot with medians") + 
     theme(legend.position="none") +
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
 bp22 <- ggplotSampleMDS(
     mdsObj = mds,
@@ -362,15 +454,22 @@ bp22 <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     repelArrowLabels = TRUE,
     displayPointLabel = FALSE,
     title = "Bi-plot with 10th quantile") + 
     theme(legend.position="none") + 
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
-ggplotResults(bp21 / bp22, name = "FigS5_biplots")
+ggplotResults(bp21 / bp22, name = "FigS5_biplots", width = 570, height = 960)
 
 
 #CytoPipelineGUI::CytoPipelineCheckApp(dir = prepDir)
@@ -394,7 +493,15 @@ pF21 <- CytoPipelineGUI::plotSelectedFlowFrame(
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
     transfoListName = " ") + labs(subtitle = "") + 
-    scale_y_continuous(limits = c(0, 3e-5))
+    scale_y_continuous(limits = c(0, 3e-5)) + 
+    labs(subtitle = "") + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 pF22 <- CytoPipelineGUI::plotSelectedFlowFrame(
     experimentName = expName,
@@ -409,7 +516,15 @@ pF22 <- CytoPipelineGUI::plotSelectedFlowFrame(
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
     transfoListName = " ") + labs(subtitle = "") + 
-    scale_y_continuous(limits = c(0, 3e-5))
+    scale_y_continuous(limits = c(0, 3e-5)) + 
+    labs(subtitle = "") + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 pF23 <- CytoPipelineGUI::plotSelectedFlowFrame(
     experimentName = expName,
@@ -424,7 +539,15 @@ pF23 <- CytoPipelineGUI::plotSelectedFlowFrame(
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
     transfoListName = " ") + labs(subtitle = "") + 
-    scale_y_continuous(limits = c(0, 3e-5))
+    scale_y_continuous(limits = c(0, 3e-5)) + 
+    labs(subtitle = "") + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 pF24 <- CytoPipelineGUI::plotSelectedFlowFrame(
     experimentName = expName,
@@ -439,12 +562,20 @@ pF24 <- CytoPipelineGUI::plotSelectedFlowFrame(
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
     transfoListName = " ") + labs(subtitle = "") + 
-    scale_y_continuous(limits = c(0, 3e-5))
+    scale_y_continuous(limits = c(0, 3e-5)) + 
+    labs(subtitle = "") + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 pRes <- 
     (pF21 + pF23 ) / (pF22 + pF24  )
 
-ggplotResults(pRes, name = "FigS5_indiv_samples")
+ggplotResults(pRes, name = "FigS5_indiv_samples", width = 960, height = 480)
 message("Done!")
 
 ## Figure S8 - projection using channel medians
@@ -464,7 +595,7 @@ mdsMedians <- computeMetricMDS(pwDistMedians, nDim = 4)
 #RSq(mdsMedians)
 message("Done!")
 
-message("Generating Figure S10...")
+message("Generating Figure S8...")
 p1Medians <- ggplotSampleMDS(
     mdsObj = mdsMedians,
     pData = phenoData,
@@ -474,9 +605,17 @@ p1Medians <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     title = "MDS - projection axes 1 and 2") + 
     scale_shape_manual(values = c(17, 15)) +
-    scale_color_manual(values = c("red", "blue")) 
+    scale_color_manual(values = c("red", "blue")) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
 p2Medians <- ggplotSampleMDS(
     mdsObj = mdsMedians,
@@ -487,37 +626,73 @@ p2Medians <- ggplotSampleMDS(
     pDataForLabel = pDataForLabel,
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     flipYAxis = TRUE,
     max.overlaps = 100,
     title = "MDS - projection axes 2 and 3") +
     scale_shape_manual(values = c(17, 15)) + 
-    scale_color_manual(values = c("red", "blue"))
+    scale_color_manual(values = c("red", "blue")) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
+
 
 pp1 <- p1 + labs(
     title = "CytoMDS - coordinates 1 and 2",
     subtitle = ""
-) + theme(legend.position = "none")
+) 
 
 pp2 <- p1Medians + labs(
     title = "MDS with medians - coordinates 1 and 2",
-    subtitle = ""
-) + theme_bw() 
+    subtitle = "")
 
 pp3 <- p2 + labs(
     title = "CytoMDS - coordinates 2 and 3",
-    subtitle = "") + 
-    theme(legend.position = "none")
+    subtitle = "")
 
 pp4 <- p2Medians + labs(
     title = "MDS with medians - coordinates 2 and 3",
-    subtitle = ""
-) + theme_bw()
+    subtitle = "")
+
+pp1Th <- pp1 + 
+    theme(legend.position="none",
+          plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15))
+
+pp2Th <- pp2 + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
+    
+pp3Th <- pp3 + 
+    theme(legend.position="none",
+          plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15))
+
+pp4Th <- pp4 + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
 
 pRes <- 
-    (pp1 + pp2) / (pp3 + pp4)
+    (pp1Th + pp2Th) / (pp3Th + pp4Th)
 
-ggplotResults(pRes, name = "FigS8")
+ggplotResults(pRes, name = "FigS8", width = 960, height = 900)
 message("Done!")
 
 

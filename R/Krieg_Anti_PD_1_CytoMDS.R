@@ -44,7 +44,7 @@ marker_class <-
 
 chLabels <- chLabels[marker_class != "none"]
 chMarkers <- chMarkers[marker_class != "none"]
-# marker_class all equal to "type"
+# marker_class all equal to "type", 24 markers are left
 
 phenoData <- flowCore::pData(Krieg_fs)
 additionalPhenoData <- 
@@ -103,10 +103,22 @@ mds <- computeMetricMDS(
 #nDim(mds)
 #RSq(mds)
 
+# saveRDS(object = mds,
+#         file = "./rds/Krieg_mdsObj.rds")
+# 
+# saveRDS(object = phenoData,
+#         file = "./rds/Krieg_phenoData.rds")
+# 
+# saveRDS(object = chStats,
+#         file = "./rds/Krieg_stats.rds")
+
+
+
 message("ALL DONE ! :-)")
 
 #ggplotSampleMDSShepard(mds)
 
+pointSizeMDS <- 2.5
 
 p1 <- ggplotSampleMDS(
     mds,
@@ -114,8 +126,16 @@ p1 <- ggplotSampleMDS(
     projectionAxes = c(1,2),
     pDataForColour = "batch_id",
     pDataForLabel = "sample_id",
-    repelPointLabels = FALSE
-) + theme_bw()
+    pointSize = pointSizeMDS,
+    repelPointLabels = FALSE) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 p2 <- ggplotSampleMDS(
     mds,
@@ -124,6 +144,7 @@ p2 <- ggplotSampleMDS(
     pDataForColour = "group_id",
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
+    pointSize = pointSizeMDS,
     repelPointLabels = FALSE,
     flipXAxis = TRUE,
     title = "Before batch correction") + 
@@ -131,7 +152,14 @@ p2 <- ggplotSampleMDS(
     scale_color_manual(values = c("red", "blue")) + 
     scale_x_continuous(limits = c(-5, 7)) + 
     scale_y_continuous(limits = c(-5, 7)) + 
-    theme_bw()
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 bp <- ggplotSampleMDS(
     mds,
@@ -144,6 +172,7 @@ bp <- ggplotSampleMDS(
     pDataForLabel = "sample_id",
     pDataForAdditionalLabelling = c("batch_id"),
     displayPointLabels = FALSE,
+    pointSize = pointSizeMDS,
     repelArrowLabels = TRUE,
     flipXAxis = TRUE,
     title = "After batch correction: bi-plot with medians") + 
@@ -151,7 +180,14 @@ bp <- ggplotSampleMDS(
     scale_shape_manual(values = c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) + 
     scale_x_continuous(limits = c(-5, 7)) + 
-    scale_y_continuous(limits = c(-5, 7)) + theme_bw()
+    scale_y_continuous(limits = c(-5, 7)) + theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 #Visualization of channel distributions before batch correction
 
@@ -288,9 +324,17 @@ p1Corr <- ggplotSampleMDS(
     projectionAxes = c(1,2),
     pDataForColour = "batch_id",
     pDataForLabel = "sample_id",
+    pointSize = pointSizeMDS,
     repelPointLabels = FALSE,
-    flipYAxis = TRUE
-) + theme_bw()
+    flipYAxis = TRUE) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 p2Corr <- ggplotSampleMDS(
     mdsCorr,
@@ -299,19 +343,28 @@ p2Corr <- ggplotSampleMDS(
     pDataForColour = "group_id",
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
+    pointSize = pointSizeMDS,
     repelPointLabels = FALSE,
     flipYAxis = TRUE,
     title = "After batch correction") +
     scale_shape_manual(values = c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) + 
     scale_x_continuous(limits = c(-5, 7)) + 
-    scale_y_continuous(limits = c(-5, 7)) + theme_bw()
+    scale_y_continuous(limits = c(-5, 7)) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 # Figure 4
 message("Generating Figure 4...")
 pRes <- 
     (p2 + theme(legend.position = "none")) + p2Corr
-ggplotResults(pRes, "Fig4")
+ggplotResults(pRes, "Fig4", width = 960, height = 480)
 message("Done!")
 
 
@@ -330,6 +383,7 @@ bpCorr <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pDataForAdditionalLabelling = c("batch_id"),
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
     arrowLabelSize = 3,
@@ -341,7 +395,15 @@ bpCorr <- ggplotSampleMDS(
     scale_shape_manual(values = c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) + 
     scale_x_continuous(limits = c(-5, 7)) + 
-    scale_y_continuous(limits = c(-5, 7)) + theme_bw()
+    scale_y_continuous(limits = c(-5, 7)) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 bpCorr2 <- ggplotSampleMDS(
     mdsCorr,
@@ -353,6 +415,7 @@ bpCorr2 <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pDataForAdditionalLabelling = c("batch_id"),
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
     arrowLabelSize = 3,
@@ -365,14 +428,22 @@ bpCorr2 <- ggplotSampleMDS(
     scale_shape_manual(values = c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) + 
     scale_x_continuous(limits = c(-5, 7)) + 
-    scale_y_continuous(limits = c(-5, 7)) + theme_bw()
+    scale_y_continuous(limits = c(-5, 7)) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 # Figure S6
 
 message("Generating Figure S6...")
 pRes <- 
     (bpCorr + theme(legend.position = "none")) + bpCorr2
-ggplotResults(pRes, "FigS6")
+ggplotResults(pRes, "FigS6_Krieg_biPlots", width = 960, height = 480)
 message("Done!")
 
 # Figure S6b (not shown in article)
@@ -388,6 +459,7 @@ bpUnCorr <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pDataForAdditionalLabelling = c("batch_id"),
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
     arrowLabelSize = 3,
@@ -400,7 +472,15 @@ bpUnCorr <- ggplotSampleMDS(
     scale_shape_manual(values = c(17, 15)) +
     scale_color_manual(values = c("red", "blue")) +
     scale_x_continuous(limits = c(-5, 7)) +
-    scale_y_continuous(limits = c(-5, 7)) + theme_bw()
+    scale_y_continuous(limits = c(-5, 7)) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 bpUnCorr2 <- ggplotSampleMDS(
     mds,
@@ -412,6 +492,7 @@ bpUnCorr2 <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pDataForAdditionalLabelling = c("batch_id"),
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
     arrowLabelSize = 3,
@@ -425,7 +506,15 @@ bpUnCorr2 <- ggplotSampleMDS(
     scale_shape_manual(values = c(17, 15)) +
     scale_color_manual(values = c("red", "blue")) +
     scale_x_continuous(limits = c(-5, 7)) +
-    scale_y_continuous(limits = c(-5, 7)) + theme_bw()
+    scale_y_continuous(limits = c(-5, 7)) + 
+    theme_bw() + 
+    theme(plot.title = element_text(size = 20),
+          plot.subtitle = element_text(size = 15),
+          axis.title = element_text(size = 15),
+          axis.text = element_text(size = 15),
+          legend.title = element_text(size = 15),
+          legend.text = element_text(size = 12),
+          strip.text = element_text(size = 15))
 
 # Figure S6b
 
@@ -433,7 +522,7 @@ pRes <-
     ((bpUnCorr + labs(title = "Before batch correction") + theme(legend.position = "none")) + bpUnCorr2) /
     ((bpCorr + labs(title = "After batch correction") + theme(legend.position = "none")) + bpCorr2)
 
-ggplotResults(pRes, "FigS6b")
+ggplotResults(pRes, "FigS6b_Krieg_biPlots", width = 960, height = 960)
 message("Done!")
 
 
@@ -446,10 +535,11 @@ pCorrSmall <- ggplotSampleMDS(
     pDataForColour = "group_id",
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
+    pointSize = pointSizeMDS,
     repelPointLabels = FALSE,
     flipYAxis = TRUE,
     displayPointLabels = FALSE,
-    title = "After batch correction") +
+    title = "") +
     scale_shape_manual(values = c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) + 
     scale_x_continuous(limits = c(-5, 7)) + 
@@ -457,11 +547,13 @@ pCorrSmall <- ggplotSampleMDS(
     theme_classic() + 
     theme(axis.text.x=element_blank()) + 
     theme(axis.text.y=element_blank()) +
-    labs(x = "axis 1", y = "axis 2")
+    labs(x = "axis 1", y = "axis 2", subtitle = "") + 
+    theme(axis.title = element_text(size = 25),
+          axis.text = element_blank(),
+          legend.position = "none",
+          strip.text = element_blank())
 
-pCorrSmall
-
-ggplotResults(pCorrSmall, "Fig1_small_MDS")
+ggplotResults(pCorrSmall, "Fig1_small_MDS", width = 240, height = 240)
 
 bpCorrSmall <- ggplotSampleMDS(
     mdsCorr,
@@ -473,6 +565,7 @@ bpCorrSmall <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pDataForAdditionalLabelling = c("batch_id"),
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = FALSE,
     arrowLabelSize = 3,
@@ -487,11 +580,13 @@ bpCorrSmall <- ggplotSampleMDS(
     scale_x_continuous(limits = c(-5, 7)) + 
     scale_y_continuous(limits = c(-5, 7)) + 
     theme_classic() + 
-    theme(axis.text.x=element_blank()) + 
-    theme(axis.text.y=element_blank()) +
-    labs(x = "axis 1", y = "axis 2")
+    labs(x = "axis 1", y = "axis 2", subtitle = "") + 
+    theme(axis.title = element_text(size = 25),
+          axis.text = element_blank(),
+          legend.position = "none",
+          strip.text = element_blank())
 
-ggplotResults(bpCorrSmall, "Fig1_small_biplot")
+ggplotResults(bpCorrSmall, "Fig1_small_biplot", width = 240, height = 240)
 
 message("Done!")
 

@@ -34,14 +34,18 @@ comment code below:
 #
 # BiocManager::install("CytoMDS")
 # BiocManager::install("CytoPipelineGUI")
-# BiocManager::install(c("patchwork", "Polychrome"))
-#
+# BiocManager::install(c("patchwork", "Polychrome", "purrr"))
+# 
+# BiocManager::install("sva")
 # devtools::install_github("biosurf/cyCombine")
 ```
 
-IMPORTANT REMARK: Note that the pre-processing part require *CytoPipeline* 
-version >=1.5.1 (which is in Bioconductor 3.20, i.e. the development version 
-at the time of writing).
+IMPORTANT REMARKS: 
+- the pre-processing part requires *CytoPipeline* version >=1.5.1 .
+- the MDS plot part requires *CytoMDS* version >=1.3.2, 
+which is in Bioconductor 3.21, i.e. the development version 
+at the time of writing. 
+
 
 ## Generating the CytoPipeline caches for pre-processing 
 

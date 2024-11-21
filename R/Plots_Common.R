@@ -2,12 +2,11 @@ plotDir <- file.path(getwd(), "plots")
 dir.create(plotDir, showWarnings = FALSE)
 
 plotInFile <- TRUE
-plotFileRoot <- file.path(plotDir, 
-                          "Plot_")
 
-ggplotResults <- function(ggplotObj, name) {
+ggplotResults <- function(ggplotObj, name, ...) {
     if (plotInFile) {
-        png(filename = paste0(plotFileRoot, name, ".png"))
+        png(filename = file.path(plotDir, 
+                                 paste0(name, ".png")), ...)
         print(ggplotObj)
         dev.off()
         invisible(ggplotObj)   

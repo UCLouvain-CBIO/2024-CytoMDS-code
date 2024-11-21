@@ -11,8 +11,6 @@ require(cyCombine)      # github repo user : biosurf/cyCombine
 #require(uwot)          # for umap
 #require(irlba)         # for PCA
 
-
-
 message("Getting Results...")
 
 # directory from which we read the preprocessing results
@@ -179,17 +177,34 @@ distVec <- pwDist[upper.tri(pwDist)]
 # nDim(mds)
 # CytoMDS::RSq(mds)
 
+# saveRDS(object = mds,
+#         file = "./rds/HBV_mdsObj.rds")
+# 
+# saveRDS(object = phenoData,
+#         file = "./rds/HBV_phenoData.rds")
+# 
+# saveRDS(object = chStats,
+#         file = "./rds/HBV_stats.rds")
+
+pointSizeShepard <- 1.0
+pointSizeMDS <- 2.5
+
 # Figure S1
 
 message("Generating Figure S1...")
 pSh <- ggplotSampleMDSShepard(mds, 
                                lineWidth = 1.0, 
-                               pointSize = 1.0,
+                               pointSize = pointSizeShepard,
                                title = "") + 
     scale_x_continuous(limits = c(0,2)) + 
-    theme_bw()
+    theme_bw() + theme(plot.title = element_text(size = 20),
+                       plot.subtitle = element_text(size = 15),
+                       axis.title = element_text(size = 15),
+                       axis.text = element_text(size = 15),
+                       legend.title = element_text(size = 15),
+                       legend.text = element_text(size = 12))
 
-ggplotResults(pSh, name = "FigS1")
+ggplotResults(pSh, name = "FigS1_HBV_chronic_mouse_Shepard", width = 480, height = 480)
 message("Done!")
 
 # Figure 2
@@ -207,13 +222,19 @@ p1 <- ggplotSampleMDS(
     pDataForColour = pDataForColour,
     pDataForShape = pDataForShape,
     pDataForLabel = pDataForLabel,
+    pointSize = pointSizeMDS,
     max.overlaps = 100,
     title = "MDS - coordinates 1 and 2"
 ) + scale_shape_manual(values=c(17, 15))+ 
     scale_color_manual(values = c("red", "blue")) + 
-    theme_bw()
+    theme_bw() + theme(plot.title = element_text(size = 20),
+                       plot.subtitle = element_text(size = 15),
+                       axis.title = element_text(size = 15),
+                       axis.text = element_text(size = 15),
+                       legend.title = element_text(size = 15),
+                       legend.text = element_text(size = 12))
 
-ggplotResults(p1, name = "Fig2_main_part")
+ggplotResults(p1, name = "Fig2_main_part", width = 480, height = 480)
 
 b1 <- ggplotSampleMDS(
     mdsObj = mds,
@@ -224,14 +245,20 @@ b1 <- ggplotSampleMDS(
     pDataForColour = pDataForColour,
     pDataForShape = pDataForShape,
     pDataForLabel = pDataForLabel,
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     arrowThreshold = 0.5,
     repelArrowLabels = TRUE,
     title = "Bi-plot with medians" 
-    ) + theme(legend.position = "none") + 
+) + theme(legend.position = "none") + 
     scale_shape_manual(values=c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) + 
-    theme_bw()
+    theme_bw() + theme(plot.title = element_text(size = 20),
+                       plot.subtitle = element_text(size = 15),
+                       axis.title = element_text(size = 15),
+                       axis.text = element_text(size = 15),
+                       legend.title = element_text(size = 15),
+                       legend.text = element_text(size = 12))
 
 
 b2 <- ggplotSampleMDS(
@@ -243,6 +270,7 @@ b2 <- ggplotSampleMDS(
     pDataForColour = pDataForColour,
     pDataForShape = pDataForShape,
     pDataForLabel = pDataForLabel,
+    pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     arrowThreshold = 0.5,
     repelArrowLabels = TRUE,
@@ -250,9 +278,14 @@ b2 <- ggplotSampleMDS(
 ) + theme(legend.position = "none") + 
     scale_shape_manual(values=c(17, 15))+ 
     scale_color_manual(values = c("red", "blue")) + 
-    theme_bw()
+    theme_bw() + theme(plot.title = element_text(size = 20),
+                       plot.subtitle = element_text(size = 15),
+                       axis.title = element_text(size = 15),
+                       axis.text = element_text(size = 15),
+                       legend.title = element_text(size = 15),
+                       legend.text = element_text(size = 12))
 
-ggplotResults(b1 / b2, name = "Fig2_biplots")
+ggplotResults(b1 / b2, name = "Fig2_biplots", width = 480, height = 960)
 
 
 #CytoPipelineGUI::CytoPipelineCheckApp(dir = prepDir)
@@ -270,7 +303,15 @@ pF1 <- CytoPipelineGUI::plotSelectedFlowFrame(
     nDisplayCells = 10000,
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
-    transfoListName = " ")
+    transfoListName = " ") + theme(plot.title = element_text(size = 20),
+                                   plot.subtitle = element_text(size = 15),
+                                   axis.title = element_text(size = 15),
+                                   axis.text = element_text(size = 15),
+                                   legend.title = element_text(size = 15),
+                                   legend.text = element_text(size = 12),
+                                   strip.text = element_text(size = 15)) +
+    labs(subtitle = "")
+    
 
 pF2 <- CytoPipelineGUI::plotSelectedFlowFrame(
     experimentName = expName,
@@ -284,9 +325,22 @@ pF2 <- CytoPipelineGUI::plotSelectedFlowFrame(
     nDisplayCells = 10000,
     useFixedLinearRange = TRUE,
     linearRange = c(-300, 262144),
-    transfoListName = " ")
+    transfoListName = " ") + theme(plot.title = element_text(size = 20),
+                                   plot.subtitle = element_text(size = 15),
+                                   axis.title = element_text(size = 15),
+                                   axis.text = element_text(size = 15),
+                                   legend.title = element_text(size = 15),
+                                   legend.text = element_text(size = 12),
+                                   strip.text = element_text(size = 15)) +
+    labs(subtitle = "")
 
-ggplotResults(pF1 + pF2, name = "Fig2_indiv_samples" )
+ggplotResults(pF1 + pF2, name = "Fig2_indiv_samples", width = 960, height = 480 )
+
+message("Done!")
+
+
+
+#CytoPipelineGUI::CytoPipelineCheckApp(dir = prepDir)
 
 message("Done!")
 
@@ -311,7 +365,7 @@ pFacet2 <- CytoPipeline::ggplotEvents(
     xLinearRange = c(0, 2.),
     yLinearRange = c(0, 2.)) + facet_wrap(~name, ncol = 3)
 
-ggplotResults(pFacet1 + pFacet2, name = "FigS2" )
+ggplotResults(pFacet1 + pFacet2, name = "FigS2",  width = 960, height = 960)
 message("Done!")
 
 # Figure S1b (not shown in article)
@@ -415,7 +469,7 @@ pRes <-
     pF7 + pF8 + 
     plot_layout(design = layout) 
 
-ggplotResults(pRes, name = "FigS1b" )
+ggplotResults(pRes, name = "FigS1b", width = 480, height = 720)
 message("Done!")
     
 
@@ -516,7 +570,7 @@ pRes <-
     plot_layout(design = layout) 
 
 
-ggplotResults(pRes, name = "FigS1c" )
+ggplotResults(pRes, name = "FigS1c", width = 480, height = 720)
 message("Done!")
 
 # UMAP, TSNE, PCA
@@ -579,6 +633,7 @@ set.seed(0)
 sam <- sample(1:nrow(uncorrected), nSamples)
 
 chMarkers <- selChannelList[["all"]]
+#chMarkers <- selChannelList[["prep"]]
 
 #run tsne
 message("Calculating tSNE...")
