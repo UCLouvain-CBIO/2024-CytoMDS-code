@@ -7,9 +7,11 @@ require(ggplot2)
 require(patchwork)
 require(purrr)
 
+# Set the following flag to TRUE to run the computational benchmarking
+# WARNING: This is likely to take between one and two hours on a standard computer
 computeStudy <- FALSE
-resultFileMarker <- "./rds/resMarker_2ndTrial.rds"
-resultFileSampling <- "./rds/resSampling_2ndTrial.rds"
+resultFileMarker <- "./rds/resMarker.rds"
+resultFileSampling <- "./rds/resSampling.rds"
 
 if (computeStudy) {
     
@@ -38,13 +40,9 @@ if (computeStudy) {
     allChannels <- flowCore::colnames(inputFF)[c(2,5,8:33)]
     
     # reading target flowSet
-    # sampleFiles <- sampleFiles(pipL)
-    # 
+    
     allPhenoData <- CytoPipeline::pData(pipL)
-    # 
-    # allPhenoData["data_acquisition"] <- allPhenoData["panel"]
-    # 
-    # N <- length(sampleFiles)
+   
     
     tgtSeq <- c(1, 9)
     ffList <- list()
@@ -95,12 +93,12 @@ if (computeStudy) {
     expr2 <- expr2 + matrix(data = rnorm(NCells * ncol(expr1), sd = rNoiseSD),
                             ncol = ncol(expr1))
     
-    startTime <- Sys.time()
-    refDist <- CytoMDS::EMDDist(x1 = expr1, x2 = expr2)
-    endTime <- Sys.time()
-    print(endTime - startTime)
-
-    refDist
+    # startTime <- Sys.time()
+    # refDist <- CytoMDS::EMDDist(x1 = expr1, x2 = expr2)
+    # endTime <- Sys.time()
+    # print(endTime - startTime)
+    # 
+    # refDist
 
     calculateEMDWithNbMarkers <- function(nMarker, expr1, expr2, markers) {
         message(paste0("calculating distance with ", nMarker, " markers..."))
@@ -139,21 +137,24 @@ if (computeStudy) {
     message(paste0("Running distance calculation with a varying nb of markers..."))
 
     nMarkers <- seq(27, 3, -3)
-    #nMarkers <- seq(14, 7, -7)
+    
     nRuns <- 20
+    
+    expr1_100 <- expr1[sample(nrow(expr1), 100000, replace = FALSE),]
+    expr2_100 <- expr1[sample(nrow(expr1), 100000, replace = FALSE),]
 
     allRes1 <- lapply(1:nRuns,
                       FUN = function(run) {
                           message("STARTING RUN #", run, "/", nRuns)
                           message("*******************************")
                           markers <- sample(
-                              ncol(expr1),
-                              size = ncol(expr1),
+                              ncol(expr1_100),
+                              size = ncol(expr1_100),
                               replace = FALSE)
                           runResults <- lapply(nMarkers,
                                                FUN = calculateEMDWithNbMarkers,
-                                               expr1 = expr1,
-                                               expr2 = expr2,
+                                               expr1 = expr1_100,
+                                               expr2 = expr2_100,
                                                markers = markers)
                           list(run = run, res = runResults)
                       })
@@ -238,8 +239,6 @@ pSampling2 <- ggplot(DFSampling[DFSampling$nSampling %in% visSampling2, ],
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 12))
 
-#pSampling1 + pSampling2
-
 ggplotResults(pSampling1 + pSampling2,
               name = "FigS9_comp_study_events", width = 960, height = 480)
 
@@ -272,57 +271,7 @@ pMarker <- ggplot(DFMarkers, mapping = aes(x = nMarkerFct, y = elapsed)) +
 ggplotResults(pMarker, name = "FigS10_comp_study_markers", width = 480, 
               height = 480)
 
-# nMarkers <- c(7, 14, 21, 28)
-# 
-# 
-# library(microbenchmark)
-# 
-# nM <- 7
-# 
-# 
-# res <- microbenchmark(
-#     list = list(
-#         {selMarkers <- 1:nM},
-#         {redExpr1 <- expr1[, selMarkers, drop = FALSE]},
-#         {redExpr2 <- expr2[, selMarkers, drop = FALSE]},
-#         {EMD <- CytoMDS::EMDDist(
-#             x1 = redExpr1,
-#             x2 = redExpr2)}
-#     ),
-#     times = 1,
-#     control = list(order = "inorder", warmup = 0),
-#     setup = NULL
-# )
-#     
-# markers <- 1:7
-# selMarkers <- 1:7
-# 
-# 
-# nMarkerInTotal <- ncol(expr1)
-# nRun <- 5
-# nMarker <- 21
-# dds <- rep(0., nRun)
-# set.seed(0)
-# 
-# res <- microbenchmark(
-#     {
-#         dd <- CytoMDS::EMDDist(
-#              x1 = redExpr1,
-#              x2 = redExpr2)
-#     },
-#     times = nRun,
-#     control = list(order = "inorder", warmup = 2),
-#     setup = {
-#         selMarkers <- sample(28, size = nMarker, replace = FALSE)
-#         message("selMarkers : ", Reduce(f = paste, x = as.character(selMarkers)))
-#         redExpr1 <- expr1[, selMarkers, drop = FALSE]
-#         redExpr2 <- expr2[, selMarkers, drop = FALSE]
-#         message("mean Expr1 : ", Reduce(f = paste, x = colMeans(redExpr1)))
-#         message("mean Expr2 : ", Reduce(f = paste, x = colMeans(redExpr2)))
-#     }
-# )
-# 
-# res$time / 1e9
+message("Computational study done!")
 
 
 

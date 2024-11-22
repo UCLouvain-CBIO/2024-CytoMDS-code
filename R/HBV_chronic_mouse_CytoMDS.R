@@ -248,6 +248,7 @@ b1 <- ggplotSampleMDS(
     pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     arrowThreshold = 0.5,
+    arrowLabelSize = 5,
     repelArrowLabels = TRUE,
     title = "Bi-plot with medians" 
 ) + theme(legend.position = "none") + 
@@ -255,7 +256,7 @@ b1 <- ggplotSampleMDS(
     scale_color_manual(values = c("red", "blue")) + 
     theme_bw() + theme(plot.title = element_text(size = 20),
                        plot.subtitle = element_text(size = 15),
-                       axis.title = element_text(size = 15),
+                       axis.title = element_text(size = 20),
                        axis.text = element_text(size = 15),
                        legend.title = element_text(size = 15),
                        legend.text = element_text(size = 12))
@@ -274,13 +275,14 @@ b2 <- ggplotSampleMDS(
     displayPointLabels = FALSE,
     arrowThreshold = 0.5,
     repelArrowLabels = TRUE,
+    arrowLabelSize = 5,
     title = "Bi-plot with standard deviations" 
 ) + theme(legend.position = "none") + 
     scale_shape_manual(values=c(17, 15))+ 
     scale_color_manual(values = c("red", "blue")) + 
     theme_bw() + theme(plot.title = element_text(size = 20),
                        plot.subtitle = element_text(size = 15),
-                       axis.title = element_text(size = 15),
+                       axis.title = element_text(size = 20),
                        axis.text = element_text(size = 15),
                        legend.title = element_text(size = 15),
                        legend.text = element_text(size = 12))
@@ -365,7 +367,9 @@ pFacet2 <- CytoPipeline::ggplotEvents(
     xLinearRange = c(0, 2.),
     yLinearRange = c(0, 2.)) + facet_wrap(~name, ncol = 3)
 
-ggplotResults(pFacet1 + pFacet2, name = "FigS2",  width = 960, height = 960)
+ggplotResults(pFacet1 + pFacet2, 
+              name = "FigS2_HBV_chronic_mouse_all_samples_2D",  
+              width = 640, height = 960)
 message("Done!")
 
 # Figure S1b (not shown in article)

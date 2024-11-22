@@ -219,6 +219,7 @@ p1 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    pointLabelSize = 5,
     title = "MDS - projection axes 1 and 2") + 
     scale_shape_manual(values = c(17, 15)) +
     scale_color_manual(values = c("red", "blue")) +
@@ -241,6 +242,7 @@ p2 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    pointLabelSize = 5,
     title = "MDS - projection axes 2 and 3") +
     scale_shape_manual(values = c(17, 15)) + 
     scale_color_manual(values = c("red", "blue")) +
@@ -273,6 +275,7 @@ p01 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    pointLabelSize = 5,
     title = "MDS - projection axes 1 and 2") +
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
@@ -299,6 +302,7 @@ bp11 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    arrowLabelSize = 5,
     displayPointLabels = FALSE,
     title = "Bi-plot with medians") + 
     theme(legend.position="none") +
@@ -307,7 +311,7 @@ bp11 <- ggplotSampleMDS(
     scale_color_manual(values = c("red", "blue")) + 
     theme(plot.title = element_text(size = 20),
           plot.subtitle = element_text(size = 15),
-          axis.title = element_text(size = 15),
+          axis.title = element_text(size = 20),
           axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 12))
@@ -325,6 +329,7 @@ bp12 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    arrowLabelSize = 5,
     displayPointLabel = FALSE,
     title = "Bi-plot with standard deviations") + 
     theme(legend.position="none") + 
@@ -333,7 +338,7 @@ bp12 <- ggplotSampleMDS(
     scale_color_manual(values = c("red", "blue")) + 
     theme(plot.title = element_text(size = 20),
           plot.subtitle = element_text(size = 15),
-          axis.title = element_text(size = 15),
+          axis.title = element_text(size = 20),
           axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 12))
@@ -403,6 +408,7 @@ p02 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    pointLabelSize = 5,
     title = "MDS - projection axes 2 and 3") +
     theme_bw() + 
     scale_shape_manual(values = c(17, 15)) +
@@ -431,6 +437,7 @@ bp21 <- ggplotSampleMDS(
     pointSize = pointSizeMDS,
     repelArrowLabels = TRUE,
     displayPointLabels = FALSE,
+    arrowLabelSize = 5,
     title = "Bi-plot with medians") + 
     theme(legend.position="none") +
     theme_bw() + 
@@ -438,7 +445,7 @@ bp21 <- ggplotSampleMDS(
     scale_color_manual(values = c("red", "blue")) + 
     theme(plot.title = element_text(size = 20),
           plot.subtitle = element_text(size = 15),
-          axis.title = element_text(size = 15),
+          axis.title = element_text(size = 20),
           axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 12))
@@ -455,6 +462,7 @@ bp22 <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    arrowLabelSize = 5,
     repelArrowLabels = TRUE,
     displayPointLabel = FALSE,
     title = "Bi-plot with 10th quantile") + 
@@ -464,7 +472,7 @@ bp22 <- ggplotSampleMDS(
     scale_color_manual(values = c("red", "blue")) + 
     theme(plot.title = element_text(size = 20),
           plot.subtitle = element_text(size = 15),
-          axis.title = element_text(size = 15),
+          axis.title = element_text(size = 20),
           axis.text = element_text(size = 15),
           legend.title = element_text(size = 15),
           legend.text = element_text(size = 12))
@@ -606,6 +614,7 @@ p1Medians <- ggplotSampleMDS(
     pDataForAdditionalLabelling = 
         pDataForAdditionalLabelling,
     pointSize = pointSizeMDS,
+    pointLabelSize = 5,
     title = "MDS - projection axes 1 and 2") + 
     scale_shape_manual(values = c(17, 15)) +
     scale_color_manual(values = c("red", "blue")) + 

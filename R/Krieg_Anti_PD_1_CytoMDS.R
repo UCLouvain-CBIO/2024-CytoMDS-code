@@ -127,7 +127,8 @@ p1 <- ggplotSampleMDS(
     pDataForColour = "batch_id",
     pDataForLabel = "sample_id",
     pointSize = pointSizeMDS,
-    repelPointLabels = FALSE) + 
+    pointLabelSize = 5,
+    repelPointLabels = TRUE) + 
     theme_bw() + 
     theme(plot.title = element_text(size = 20),
           plot.subtitle = element_text(size = 15),
@@ -145,7 +146,8 @@ p2 <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pointSize = pointSizeMDS,
-    repelPointLabels = FALSE,
+    pointLabelSize = 5,
+    repelPointLabels = TRUE,
     flipXAxis = TRUE,
     title = "Before batch correction") + 
     scale_shape_manual(values = c(17, 15)) +
@@ -325,7 +327,8 @@ p1Corr <- ggplotSampleMDS(
     pDataForColour = "batch_id",
     pDataForLabel = "sample_id",
     pointSize = pointSizeMDS,
-    repelPointLabels = FALSE,
+    pointLabelSize = 5,
+    repelPointLabels = TRUE,
     flipYAxis = TRUE) + 
     theme_bw() + 
     theme(plot.title = element_text(size = 20),
@@ -344,7 +347,8 @@ p2Corr <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pointSize = pointSizeMDS,
-    repelPointLabels = FALSE,
+    pointLabelSize = 5,
+    repelPointLabels = TRUE,
     flipYAxis = TRUE,
     title = "After batch correction") +
     scale_shape_manual(values = c(17, 15)) + 
@@ -386,7 +390,7 @@ bpCorr <- ggplotSampleMDS(
     pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
-    arrowLabelSize = 3,
+    arrowLabelSize = 5,
     repelArrowLabels = TRUE,
     min.segment.length = 0.,
     flipYAxis = TRUE,
@@ -418,7 +422,7 @@ bpCorr2 <- ggplotSampleMDS(
     pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
-    arrowLabelSize = 3,
+    arrowLabelSize = 5,
     repelArrowLabels = TRUE,
     min.segment.length = 0.,
     flipYAxis = TRUE,
@@ -462,7 +466,7 @@ bpUnCorr <- ggplotSampleMDS(
     pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
-    arrowLabelSize = 3,
+    arrowLabelSize = 5,
     repelArrowLabels = TRUE,
     min.segment.length = 0.,
     flipXAxis = TRUE,
@@ -495,7 +499,7 @@ bpUnCorr2 <- ggplotSampleMDS(
     pointSize = pointSizeMDS,
     displayPointLabels = FALSE,
     displayArrowLabels = TRUE,
-    arrowLabelSize = 3,
+    arrowLabelSize = 5,
     repelArrowLabels = TRUE,
     min.segment.length = 0.,
     flipXAxis = TRUE,
@@ -536,7 +540,7 @@ pCorrSmall <- ggplotSampleMDS(
     pDataForShape = "batch_id",
     pDataForLabel = "sample_id",
     pointSize = pointSizeMDS,
-    repelPointLabels = FALSE,
+    repelPointLabels = TRUE,
     flipYAxis = TRUE,
     displayPointLabels = FALSE,
     title = "") +
