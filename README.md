@@ -42,7 +42,7 @@ comment code below:
 
 IMPORTANT REMARKS: 
 - the pre-processing part requires *CytoPipeline* version >=1.5.1 .
-- the MDS plot part requires *CytoMDS* version >=1.3.2, 
+- the MDS plot part requires *CytoMDS* version >=1.3.3, 
 which is in Bioconductor 3.21, i.e. the development version 
 at the time of writing. 
 

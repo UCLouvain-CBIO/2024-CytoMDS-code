@@ -163,8 +163,8 @@ chStats <- resultArray["chStats", selChType][[1]]
 pwDist <- resultArray["pwDist", selChType][[1]]
 mds <- resultArray["mds", selChType][[1]]
 
-distVec <- pwDist[upper.tri(pwDist)]
-
+# pwDistMat <- as.matrix(pwDist)
+# distVec <- pwDist[upper.tri(pwDist)]
 # display histogram of all pairwise distances
 # hist(distVec, 
 #      main = paste0(

@@ -156,16 +156,16 @@ chStats <- resultArray["chStats", selChType][[1]]
 pwDist <- resultArray["pwDist", selChType][[1]]
 mds <- resultArray["mds", selChType][[1]]
 
-distVec <- pwDist[upper.tri(pwDist)]
-
-#display histogram of all pairwise distances
-hist(distVec,
-     main = paste0(
-         "Pairwise distances (step = ",
-         prepstep,
-         "; channels = ",
-         selChType,
-         ")"))
+# pwDistMat <- as.matrix(pwDist)
+# distVec <- pwDistMat[upper.tri(pwDistMat)]
+# #display histogram of all pairwise distances
+# hist(distVec,
+#      main = paste0(
+#          "Pairwise distances (step = ",
+#          prepstep,
+#          "; channels = ",
+#          selChType,
+#          ")"))
 
 #nDim(mds)
 #CytoMDS::RSq(mds)

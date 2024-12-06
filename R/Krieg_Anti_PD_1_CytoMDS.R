@@ -74,8 +74,8 @@ pwDist <- pairwiseEMDDist(
     verbose = FALSE
 )
 
+#pwDistMat <- as.matrix(pwDistMat)
 #hist(pwDist)
-
 
 statFUNs <- c("median" = stats::median,
               "std-dev" = stats::sd,
@@ -297,6 +297,7 @@ pwDistCorr <- pairwiseEMDDist(
     verbose = FALSE
 )
 
+#pwDistCorrMat <- as.matrix(pwDistCorr)
 #hist(pwDistCorr)
 
 message("Calculating summary stats after batch corrections...")
